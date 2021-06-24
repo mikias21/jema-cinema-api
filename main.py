@@ -15,7 +15,7 @@ def get_home_content():
             'latest_tv': get_latest_tv(),
             'recommended_tv': get_recommended_tv_shows()
         }
-        return jsonify(home_content)
+        return jsonify({"data": "hello"})
 
 
 
