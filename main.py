@@ -17,7 +17,9 @@ def get_home_content():
             'recommended_tv': get_recommended_tv_shows()
         }
         resp = make_response(home_content)
-        resp.headers.set('Access-Control-Allow-Origin', '*')
+        resp.headers.set("Access-Control-Allow-Origin", "*")
+        resp.headers.set("Access-Control-Allow-Methods", "GET")
+        resp.headers.set("Access-Control-Allow-Headers", "*")
         return resp
 
 
