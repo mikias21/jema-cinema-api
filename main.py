@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import flask
 
 # movie data 
 from home_scrapper import get_recommended_content, get_latest_movies, get_trending, get_latest_tv, get_recommended_tv_shows
@@ -15,7 +16,9 @@ def get_home_content():
             'latest_tv': get_latest_tv(),
             'recommended_tv': get_recommended_tv_shows()
         }
-        return jsonify(home_content)
+        resp = flask.Response(jsonify(home_content))
+        resp.headers['Access-Control-Allow-Origin'] = "*"
+        return resp
 
 
 
