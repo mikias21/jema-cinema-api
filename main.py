@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, make_response
 import flask
 
 # movie data 
@@ -16,13 +16,13 @@ def get_home_content():
             'latest_tv': get_latest_tv(),
             'recommended_tv': get_recommended_tv_shows()
         }
-        resp = flask.Response(jsonify(home_content))
-        resp.headers['Access-Control-Allow-Origin'] = "*"
+        resp = make_response(home_content)
+        resp.headers.set('Access-Control-Allow-Origin', '*')
         return resp
 
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=9090)
     app.debug(True)
 
