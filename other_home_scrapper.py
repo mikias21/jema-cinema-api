@@ -1,6 +1,6 @@
-import requests 
 from bs4 import BeautifulSoup   
 import requests_cache
+import uuid
 
 
 # make cached request to the website
@@ -11,6 +11,8 @@ for i in range(30):
     content = request.content 
     # soup 
     soup = BeautifulSoup(content, "html.parser")
+
+MOVIE_URL = "https://flixtor.video"
 
 def get_recommended_content():
     # home movie content 
@@ -36,10 +38,11 @@ def get_recommended_content():
 
         recommended_main.append(
             {
+                "id": str(uuid.uuid4()),
                 "title": title.decode_contents(),
                 "quality": quality.decode_contents(),
                 "poster": poster['src'],
-                "video": "https://flixtor.video"+video["href"],
+                "video": video["href"],
                 "rate": rate.getText(),
                 "year": year.getText().split(" ")[1],
                 "type": type.getText(),
@@ -70,10 +73,11 @@ def get_recommended_tv_shows():
 
         recommended_tv.append(
             {
+                "id": str(uuid.uuid4()),
                 "title": title.decode_contents(),
                 "quality": quality.decode_contents(),
                 "poster": poster['src'],
-                "video": "https://flixtor.video"+video["href"],
+                "video": video["href"],
                 "rate": rate.getText(),
                 "year": year.getText().split(" ")[1],
                 "type": type.getText(),
@@ -105,10 +109,11 @@ def get_trending():
 
         trending_main.append(
             {
+                "id": str(uuid.uuid4()),
                 "title": title.decode_contents(),
                 "quality": quality.decode_contents(),
                 "poster": poster['src'],
-                "video": "https://flixtor.video"+video["href"],
+                "video": video["href"],
                 "rate": rate.getText(),
                 "year": year.getText().split(" ")[1],
                 "type": type.getText(),
@@ -141,10 +146,11 @@ def get_latest_movies():
 
         latest_main.append(
             {
+                "id": str(uuid.uuid4()),
                 "title": title.decode_contents(),
                 "quality": quality.decode_contents(),
                 "poster": poster['src'],
-                "video": "https://flixtor.video"+video["href"],
+                "video": video["href"],
                 "rate": rate.getText(),
                 "year": year.getText().split(" ")[1],
                 "type": type.getText(),
@@ -176,10 +182,11 @@ def get_latest_tv():
 
         latest_tv.append(
             {
+                "id": str(uuid.uuid4()),
                 "title": title.decode_contents(),
                 "quality": quality.decode_contents(),
                 "poster": poster['src'],
-                "video": "https://flixtor.video"+video["href"],
+                "video": video["href"],
                 "rate": rate.getText(),
                 "year": year.getText().split(" ")[1],
                 "type": type.getText(),
@@ -191,3 +198,8 @@ def get_latest_tv():
 
 if __name__ == "__main__":
     print(get_trending())
+
+
+
+# https://mcloud.to/embed/j6j9vn?sub.info=https%3A%2F%2Fflixtor.video%2Fajax%2Fepisode%2Fsubtitles%2Fe8504359bd0eca30b831867bf20d670d%3F&autostart=true
+# https://mcloud.to/embed/13n64m?sub.info=https%3A%2F%2Fflixtor.video%2Fajax%2Fepisode%2Fsubtitles%2F04f7e3bb3edbd5b0f265ab0be3bfc052%3F&autostart=true

@@ -1,8 +1,11 @@
 from flask import Flask, jsonify, request, make_response
-import flask
 
 # movie data 
-from home_scrapper import get_recommended_content, get_latest_movies, get_trending, get_latest_tv, get_recommended_tv_shows
+from scrappers.recent_uploaded import get_recent_content
+from scrappers.movies import get_movies
+from scrappers.series import get_series
+from scrappers.cinema import get_cinema
+from scrappers.recommeded import get_recommended
 
 app = Flask(__name__)
 
@@ -10,18 +13,17 @@ app = Flask(__name__)
 def get_home_content():
     if request.method == 'GET':
         home_content = {
-            'recommended': get_recommended_content(),
-            'latest_movies': get_latest_movies(),
-            'trending': get_trending(),
-            'latest_tv': get_latest_tv(),
-            'recommended_tv': get_recommended_tv_shows()
+            'recommended': get_recommended(),
+            'recent': get_recent_content(),
+            'cinema': get_cinema(),
+            'movies': get_movies(),
+            'series': get_series()
         }
         resp = make_response(home_content)
         resp.headers.set("Access-Control-Allow-Origin", "*")
         resp.headers.set("Access-Control-Allow-Methods", "GET")
         resp.headers.set("Access-Control-Allow-Headers", "*")
         return resp
-
 
 
 if __name__ == "__main__":
