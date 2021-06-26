@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, make_response
+from flask import Flask, request, make_response
 
 # movie data 
 from scrappers.recent_uploaded import get_recent_content
@@ -6,6 +6,7 @@ from scrappers.movies import get_movies
 from scrappers.series import get_series
 from scrappers.cinema import get_cinema
 from scrappers.recommeded import get_recommended
+from scrappers.single_movie import get_movie_link
 
 app = Flask(__name__)
 
@@ -25,8 +26,20 @@ def get_home_content():
         resp.headers.set("Access-Control-Allow-Headers", "*")
         return resp
 
+@app.route('/api/movies/movie', methods=['GET'])
+def get_movie_link_api():
+    if request.method == "GET":
+        title = request.args.get("title")
+        if len(title) != 0:
+            link = get_movie_link(title)
+            movie = {"link": link}
+            resp = make_response(movie)
+            resp.headers.set("Access-Control-Allow-Origin", "*")
+            resp.headers.set("Access-Control-Allow-Methods", "GET")
+            resp.headers.set("Access-Control-Allow-Headers", "*")
+            return resp
+
 
 if __name__ == "__main__":
     app.run(port=9090)
     app.debug(True)
-
