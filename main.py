@@ -7,6 +7,7 @@ from scrappers.series import get_series
 from scrappers.cinema import get_cinema
 from scrappers.recommeded import get_recommended
 from scrappers.single_movie import get_movie_link
+from scrappers.recommendations import get_recommendations
 
 app = Flask(__name__)
 
@@ -45,6 +46,15 @@ def get_movie_link_api():
         resp.headers.set("Access-Control-Allow-Methods", "GET")
         resp.headers.set("Access-Control-Allow-Headers", "*")        
         return resp
+
+@app.route("/api/movies/recommendations", methods=['GET'])
+def get_recommendations_api():
+    recommendation = {"recommendations": get_recommendations()}
+    resp = make_response(recommendation)
+    resp.headers.set("Access-Control-Allow-Origin", "*")
+    resp.headers.set("Access-Control-Allow-Methods", "GET")
+    resp.headers.set("Access-Control-Allow-Headers", "*")        
+    return resp
 
 if __name__ == "__main__":
     app.run(port=9090)
