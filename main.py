@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, jsonify
 
 # movie data 
 from scrappers.recent_uploaded import get_recent_content
@@ -13,32 +13,38 @@ app = Flask(__name__)
 @app.route("/api/movies/home", methods=['GET'])
 def get_home_content():
     if request.method == 'GET':
-        home_content = {
+        try:
+            home_content = {
             'recommended': get_recommended(),
             'recent': get_recent_content(),
             'cinema': get_cinema(),
             'movies': get_movies(),
             'series': get_series()
-        }
-        resp = make_response(home_content)
-        resp.headers.set("Access-Control-Allow-Origin", "*")
-        resp.headers.set("Access-Control-Allow-Methods", "GET")
-        resp.headers.set("Access-Control-Allow-Headers", "*")
-        return resp
+            }
+            resp = make_response(home_content)
+            resp.headers.set("Access-Control-Allow-Origin", "*")
+            resp.headers.set("Access-Control-Allow-Methods", "GET")
+            resp.headers.set("Access-Control-Allow-Headers", "*")
+            return resp
+        except Exception as e:
+            return jsonify({"error": str(e)})
 
 @app.route('/api/movies/movie', methods=['GET'])
 def get_movie_link_api():
     if request.method == "GET":
         title = request.args.get("title")
+        link = None
         if len(title) != 0:
-            link = get_movie_link(title)
-            movie = {"link": link}
-            resp = make_response(movie)
-            resp.headers.set("Access-Control-Allow-Origin", "*")
-            resp.headers.set("Access-Control-Allow-Methods", "GET")
-            resp.headers.set("Access-Control-Allow-Headers", "*")
-            return resp
-
+            try:
+                link = get_movie_link(title)
+            except Exception as e:
+                return jsonify({"error": str(e)})
+        movie = {"link": link}
+        resp = make_response(movie)
+        resp.headers.set("Access-Control-Allow-Origin", "*")
+        resp.headers.set("Access-Control-Allow-Methods", "GET")
+        resp.headers.set("Access-Control-Allow-Headers", "*")        
+        return resp
 
 if __name__ == "__main__":
     app.run(port=9090)
