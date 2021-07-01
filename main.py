@@ -9,6 +9,7 @@ from scrappers.recommeded import get_recommended
 from scrappers.single_movie import get_movie_link, get_description
 from scrappers.recommendations import get_recommendations
 from scrappers.episods import get_episods
+from scrappers.search import search_movie
 
 app = Flask(__name__)
 
@@ -75,6 +76,23 @@ def get_episod_description():
     resp.headers.set("Access-Control-Allow-Headers", "*")        
     return resp
 
+@app.route("/api/movies/search", methods=['POST'])
+def search_movie_api():
+    if request.method == "POST":
+        movie = request.get_json()
+        movie = movie["movie"]
+        if len(movie) != 0:
+            try:
+                search_result = {
+                    'result': search_movie(movie),
+                }
+            except Exception as e:
+                return jsonify({"error": str(e)})
+        resp = make_response(search_result)
+        resp.headers.set("Access-Control-Allow-Origin", "*")
+        resp.headers.set("Access-Control-Allow-Methods", "GET")
+        resp.headers.set("Access-Control-Allow-Headers", "*")        
+        return resp
 
 if __name__ == "__main__":
     app.run(port=9090)
