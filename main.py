@@ -76,21 +76,20 @@ def get_episod_description():
     resp.headers.set("Access-Control-Allow-Headers", "*")        
     return resp
 
-@app.route("/api/movies/search", methods=['POST'])
+@app.route("/api/movies/search", methods=['GET'])
 def search_movie_api():
-    if request.method == "POST":
-        movie = request.get_json()
-        movie = movie["movie"]
-        if len(movie) != 0:
+    if request.method == "GET":
+        query = request.args.get("query")
+        if len(query) != 0:
             try:
                 search_result = {
-                    'result': search_movie(movie),
+                    'result': search_movie(query),
                 }
             except Exception as e:
                 return jsonify({"error": str(e)})
         resp = make_response(search_result)
         resp.headers.set("Access-Control-Allow-Origin", "*")
-        resp.headers.set("Access-Control-Allow-Methods", "*")
+        resp.headers.set("Access-Control-Allow-Methods", "GET")
         resp.headers.set("Access-Control-Allow-Headers", "*")        
         return resp
 
