@@ -90,7 +90,7 @@ def search_movie_api():
                 return jsonify({"error": str(e)})
         resp = make_response(search_result)
         resp.headers.set("Access-Control-Allow-Origin", "*")
-        resp.headers.set("Access-Control-Allow-Methods", "GET")
+        resp.headers.set("Access-Control-Allow-Methods", "POST")
         resp.headers.set("Access-Control-Allow-Headers", "*")        
         return resp
 
